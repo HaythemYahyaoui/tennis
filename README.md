@@ -86,6 +86,11 @@ How to start :
 Usage : 
 We have 4 endpoints that can be tested on swagger : http://localhost:8684/swagger-ui/index.html
 
+Exercice :
+{context}/api/game/run/{command}
+we can try our exercice with command equal to ABABAA
+
 Unit Test :
 We can check coverage with surfire report : tennis/business/target/site/jacoco/index.html
+
 
