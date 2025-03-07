@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="playGameUseCaseImpl" class="org.tennis.business.game.port.input.impl.PlayGameUseCaseImpl">
+        <constructor-arg ref="gameRepositoryImpl"/>
+        <constructor-arg ref="gameKafkaEvent"/>
+    </bean>
+
+    <bean id="createGameUseCaseImpl" class="org.tennis.business.game.port.input.impl.CreateGameUseCaseImpl">
+        <constructor-arg ref="gameRepositoryImpl"/>
+        <constructor-arg ref="gameKafkaEvent"/>
+    </bean>
+
+    <bean id="findGameUseCaseImpl" class="org.tennis.business.game.port.input.impl.FindGameUseCaseImpl">
+        <constructor-arg ref="gameRepositoryImpl"/>
+    </bean>
+
+    <bean id="commandGameUseCaseImpl" class="org.tennis.business.game.port.input.impl.CommandGameUseCaseImpl">
+        <constructor-arg ref="createGameUseCaseImpl"/>
+        <constructor-arg ref="findGameUseCaseImpl"/>
+        <constructor-arg ref="playGameUseCaseImpl"/>
+    </bean>
+
+</beans>
