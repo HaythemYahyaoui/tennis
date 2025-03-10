@@ -76,3 +76,21 @@ Une clé de partitionnement est ajoutée lors de l’envoi des messages pour lim
 ## Conclusion
 
 Ce projet met en avant les principes de l’architecture hexagonale, en garantissant une séparation claire entre le domaine métier, l’infrastructure et les interfaces utilisateur. L’objectif est d’obtenir un code maintenable, évolutif et indépendant des technologies sous-jacentes.
+
+How to start : 
+- got to infrastructure/src/main/resources/docker
+- run command : docker compose up -d
+- clean install on "tennis" module
+- spring-boot:run on "application" module
+
+Usage : 
+We have 4 endpoints that can be tested on swagger : http://localhost:8684/swagger-ui/index.html
+
+Exercice :
+{context}/api/game/run/{command}
+we can try our exercice with command equal to ABABAA
+
+Unit Test :
+We can check coverage with surfire report : tennis/business/target/site/jacoco/index.html
+
+
