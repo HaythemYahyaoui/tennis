@@ -1,6 +1,5 @@
 package org.tennis.business.game.model;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -8,7 +7,6 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
 class ScoreTest {
 
     @Test

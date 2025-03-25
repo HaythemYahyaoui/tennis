@@ -1,10 +1,12 @@
 package org.tennis.business.game.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class Player {
 
     private final String reference;

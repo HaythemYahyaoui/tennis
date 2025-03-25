@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.tennis.application.exception.PresentationException;
+import org.tennis.application.exception.ApplicationException;
 import org.tennis.business.exception.DomainException;
 import org.tennis.business.exception.InfrastructureException;
 
@@ -22,15 +22,24 @@ public class ExceptionsHandler {
 
     public static final String BAD_REQUEST = "BAD REQUEST";
 
-    @ExceptionHandler({Exception.class, InfrastructureException.class, DomainException.class})
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<FailResponse> exception(Exception exception) {
         FailResponse failResponse = FailResponse.builder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(exception.getMessage()).build();
+        log.error("", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failResponse);
     }
 
-    @ExceptionHandler({PresentationException.class})
-    public ResponseEntity<FailResponse> presentationException(PresentationException presentationException) {
+    @ExceptionHandler({InfrastructureException.class, DomainException.class})
+    public ResponseEntity<FailResponse> InfrastructureAndDomainException(Exception exception) {
+        FailResponse failResponse = FailResponse.builder().code(HttpStatus.INTERNAL_SERVER_ERROR.value()).message(exception.getMessage()).build();
+        log.debug("", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(failResponse);
+    }
+
+    @ExceptionHandler({ApplicationException.class})
+    public ResponseEntity<FailResponse> presentationException(ApplicationException presentationException) {
         FailResponse failResponse = FailResponse.builder().code(HttpStatus.BAD_REQUEST.value()).message(presentationException.getMessage()).build();
+        log.debug("", presentationException);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(failResponse);
     }
 
@@ -43,6 +52,7 @@ public class ExceptionsHandler {
                 .message(BAD_REQUEST)
                 .errors(errors)
                 .build();
+        log.debug("", constraintViolationException);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequestResponse);
     }
 
@@ -55,6 +65,7 @@ public class ExceptionsHandler {
                 .message(BAD_REQUEST)
                 .errors(errors)
                 .build();
+        log.debug("", methodArgumentNotValidException);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(badRequestResponse);
     }
 

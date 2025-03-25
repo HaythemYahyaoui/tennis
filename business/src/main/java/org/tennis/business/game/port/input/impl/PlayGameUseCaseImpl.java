@@ -2,6 +2,7 @@ package org.tennis.business.game.port.input.impl;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
 import org.tennis.business.exception.DomainException;
 import org.tennis.business.exception.InfrastructureException;
 import org.tennis.business.game.model.Game;
@@ -11,8 +12,7 @@ import org.tennis.business.game.port.output.GameEvent;
 import org.tennis.business.game.port.output.GameRepository;
 import org.tennis.business.utils.UseCase;
 
-import java.util.Objects;
-
+@Validated
 @UseCase(id = "JIRA-003",
         name = "Play Game",
         description = "Play a game by id and player reference")
@@ -21,9 +21,7 @@ public class PlayGameUseCaseImpl implements PlayGameUseCase {
     private final GameRepository gameRepository;
     private final GameEvent gameEvent;
 
-    public PlayGameUseCaseImpl(GameRepository gameRepository, GameEvent gameEvent) {
-        Objects.requireNonNull(gameRepository);
-        Objects.requireNonNull(gameEvent);
+    public PlayGameUseCaseImpl(@NotNull GameRepository gameRepository, @NotNull GameEvent gameEvent) {
         this.gameRepository = gameRepository;
         this.gameEvent = gameEvent;
     }
@@ -31,8 +29,8 @@ public class PlayGameUseCaseImpl implements PlayGameUseCase {
 
     @Override
     public PlayResponse play(@NotNull @Valid PlayAction playAction) throws InfrastructureException, DomainException {
-        Game game = gameRepository.findById(playAction.getGameId());
-        Player player = game.play(playAction.getPlayerReference());
+        Game game = gameRepository.findById(playAction.gameId());
+        Player player = game.play(playAction.playerReference());
         Game saved = gameRepository.save(game);
         gameEvent.playDone(GameEvent.PlayDoneEvent.builder()
                 .id(saved.getId())
@@ -50,7 +48,7 @@ public class PlayGameUseCaseImpl implements PlayGameUseCase {
                     .playerTowScore(saved.getPlayerTow().getScore())
                     .build());
         }
-        return PlayResponse.builder().playerView(PlayerView.builder().reference(player.getReference()).name(player.getName()).lastname(player.getLastname()).score(player.getScore()).build()).build();
+        return new PlayResponse(new PlayerView(player.getReference(), player.getName(), player.getLastname(), player.getScore()));
     }
 
 }

@@ -36,15 +36,14 @@ class CommandGameUseCaseImplTest {
     void setUp() throws InfrastructureException {
         commandGameUseCase = new CommandGameUseCaseImpl(createGameUseCase, findGameUseCase, playGameUseCase);
 
-        validCommandAction = new CommandGameUseCase.CommandAction();
-        validCommandAction.setCommand("ABABAA");
+        validCommandAction = new CommandGameUseCase.CommandAction("ABABAA");
 
-        CreateGameUseCase.CreateResponse createResponse = CreateGameUseCase.CreateResponse.builder().id("1L").build();
+        CreateGameUseCase.CreateResponse createResponse = new CreateGameUseCase.CreateResponse("1L");
 
         when(createGameUseCase.create(any())).thenReturn(createResponse);
-        when(findGameUseCase.findGame(any())).thenReturn(FindGameUseCase.GameView.builder().id("1L")
-                .playerOne(FindGameUseCase.PlayerDto.builder().reference("A").name("A").lastname("A").score(Score.GAME).build())
-                .playerTow(FindGameUseCase.PlayerDto.builder().reference("B").name("B").lastname("B").score(Score.THIRTY).build()).build());
+        FindGameUseCase.GameView gameView = new FindGameUseCase.GameView("1L", new FindGameUseCase.PlayerDto("A", "A", "A", Score.GAME),
+                new FindGameUseCase.PlayerDto("B", "B", "B", Score.THIRTY));
+        when(findGameUseCase.findGame(any())).thenReturn(gameView);
     }
 
     @Test

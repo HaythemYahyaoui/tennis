@@ -56,8 +56,8 @@ class PlayGameUseCaseImplTest {
         PlayGameUseCase.PlayResponse response = playGameUseCase.play(mockPlayAction);
 
         assertNotNull(response);
-        assertEquals("P1", response.getPlayerView().getReference());
-        assertEquals("John", response.getPlayerView().getName());
+        assertEquals("P1", response.playerView().reference());
+        assertEquals("John", response.playerView().name());
 
         verify(gameRepository).findById("game-123");
         verify(mockGame).play("P1");

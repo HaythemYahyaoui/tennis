@@ -3,63 +3,18 @@ package org.tennis.business.game.port.input;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
 import org.tennis.business.exception.InfrastructureException;
 import org.tennis.business.game.model.Score;
 
 
 public interface FindGameUseCase {
 
-    GameView findGame(FindGameAction playAction) throws InfrastructureException;
+    GameView findGame(@NotNull @Valid FindGameAction playAction) throws InfrastructureException;
 
-    @Builder
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class FindGameAction {
+    record FindGameAction(@NotEmpty String id) {}
 
-        @NotEmpty
-        private String id;
+    record GameView(@NotEmpty String id, @NotNull @Valid PlayerDto playerOne, @NotNull @Valid PlayerDto playerTow) {}
 
-    }
-
-    @Getter
-    @Builder
-    @ToString
-    @EqualsAndHashCode
-    class GameView {
-
-        @NotEmpty
-        private final String id;
-
-        @Valid
-        @NotNull
-        private final PlayerDto playerOne;
-
-        @Valid
-        @NotNull
-        private final PlayerDto playerTow;
-
-    }
-
-    @Getter
-    @Builder
-    @ToString
-    class PlayerDto {
-
-        @NotEmpty
-        private String reference;
-
-        @NotEmpty
-        private String name;
-
-        @NotEmpty
-        private String lastname;
-
-        @NotNull
-        private Score score;
-
-    }
-
-
+    record PlayerDto(@NotEmpty String reference, @NotEmpty String name, @NotEmpty String lastname,
+                     @NotNull Score score) {}
 }

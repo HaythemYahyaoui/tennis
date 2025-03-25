@@ -43,10 +43,8 @@ class CreateGameUseCaseImplTest {
     void setUp() {
         createGameUseCase = new CreateGameUseCaseImpl(gameRepository, gameEvent);
 
-        validCreateAction = new CreateGameUseCase.CreateAction();
-        validCreateAction.setPlayerOne(new CreateGameUseCase.PlayerDto("playerOne", "playerOne", "playerOne"));
-        validCreateAction.setPlayerTow(new CreateGameUseCase.PlayerDto("playerTow", "playerTow", "playerTow"));
-
+        validCreateAction = new CreateGameUseCase.CreateAction(new CreateGameUseCase.PlayerDto("playerOne", "playerOne", "playerOne"),
+                new CreateGameUseCase.PlayerDto("playerTow", "playerTow", "playerTow"));
         playerOne = new Player("playerOne", "playerOne", "playerOne");
         playerTow = new Player("playerTow", "playerTow", "playerTow");
 
@@ -62,7 +60,7 @@ class CreateGameUseCaseImplTest {
         CreateGameUseCase.CreateResponse response = createGameUseCase.create(validCreateAction);
 
         assertNotNull(response);
-        assertEquals(savedGame.getId(), response.getId());
+        assertEquals(savedGame.getId(), response.id());
         verify(gameRepository, times(1)).save(any());
         verify(gameEvent, times(1)).gameCreated(any(GameEvent.GameCreatedEvent.class));
     }
